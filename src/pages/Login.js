@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
 import { fetchToken } from '../redux/actions/fetchToken';
