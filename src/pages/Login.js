@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import logo from '../trivia.png';
 import '../App.css';
+import { fetchToken } from '../redux/actions/fetchToken';
 
 export default class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: '',
       name: '',
@@ -29,8 +30,16 @@ export default class Login extends Component {
     });
   };
 
-  handleLogin = () => {
-    console.log('login');
+  handleLogin = async () => {
+    const { history } = this.props;
+    const tokenAPI = await fetchToken();
+    localStorage.setItem('token', tokenAPI.token);
+    history.push('/trivia');
+  };
+
+  toSettingsBtn = () => {
+    const { history } = this.props;
+    history.push('/settings');
   };
 
   render() {
@@ -38,6 +47,13 @@ export default class Login extends Component {
     return (
       <div className="App">
         <div className="App-header">
+          <button
+            type='button'
+            data-testid='btn-settings'
+            onClick={ this.toSettingsBtn }
+          >
+            Settings
+          </button>
           <img src={ logo } className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <form>
