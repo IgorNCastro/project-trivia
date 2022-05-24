@@ -48,8 +48,8 @@ export default class Login extends Component {
       <div className="App">
         <div className="App-header">
           <button
-            type='button'
-            data-testid='btn-settings'
+            type="button"
+            data-testid="btn-settings"
             onClick={ this.toSettingsBtn }
           >
             Settings
@@ -91,3 +91,9 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
