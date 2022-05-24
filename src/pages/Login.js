@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
-import { fetchToken } from '../redux/actions/fetchToken';
+import { fetchToken, fetchGravatar } from '../redux/actions/fetchAPI';
 
 export default class Login extends Component {
   constructor(props) {
@@ -33,8 +33,16 @@ export default class Login extends Component {
 
   handleLogin = async () => {
     const { history } = this.props;
+    const { name, email } = this.state;
     const tokenAPI = await fetchToken();
+    const gravatarAPI = fetchGravatar(email);
+    const localSt = [{
+      name,
+      score: 0,
+      picture: gravatarAPI,
+    }];
     localStorage.setItem('token', tokenAPI.token);
+    localStorage.setItem('ranking', JSON.stringify(localSt));
     history.push('/trivia');
   };
 
@@ -48,13 +56,6 @@ export default class Login extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ this.toSettingsBtn }
-          >
-            Settings
-          </button>
           <img src={ logo } className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
           <form>
@@ -85,6 +86,13 @@ export default class Login extends Component {
               onClick={ this.handleLogin }
             >
               Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.toSettingsBtn }
+            >
+              Settings
             </button>
           </form>
         </div>

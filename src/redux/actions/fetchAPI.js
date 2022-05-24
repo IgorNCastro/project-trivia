@@ -1,3 +1,5 @@
+import md5 from 'crypto-js/md5';
+
 export const fetchToken = async () => {
   try {
     const url = 'https://opentdb.com/api_token.php?command=request';
@@ -9,4 +11,12 @@ export const fetchToken = async () => {
   }
 };
 
-export default fetchToken;
+export const fetchGravatar = (email) => {
+  try {
+    const hash = md5(email).toString();
+    const url = `https://www.gravatar.com/avatar/${hash}`;
+    return url;
+  } catch (e) {
+    console.log(e);
+  }
+};
