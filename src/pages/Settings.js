@@ -5,7 +5,7 @@ import '../App.css';
 export default class Settings extends Component {
   toGameBtn = () => {
     const { history } = this.props;
-    history.push('/trivia');
+    history.push('/game');
   };
 
   render() {

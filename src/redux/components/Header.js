@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import '../App.css';
 
-export default class Trivia extends Component {
+export default class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {

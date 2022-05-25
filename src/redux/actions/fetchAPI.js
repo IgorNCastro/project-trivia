@@ -20,3 +20,14 @@ export const fetchGravatar = (email) => {
     console.log(e);
   }
 };
+
+export const fetchQuestions = async (input) => {
+  try {
+    const url = `https://opentdb.com/api.php?amount=5&token=${input}`;
+    const response = await fetch(url);
+    const questions = await response.json();
+    return questions;
+  } catch (e) {
+    console.log(e);
+  }
+};
