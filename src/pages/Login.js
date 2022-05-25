@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
 import { fetchToken, fetchGravatar } from '../redux/actions/fetchAPI';
+import { setPlayer } from '../redux/actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,8 +26,9 @@ export default class Login extends Component {
   }
 
   handleChange = ({ target }) => {
+    const { name, value } = target;
     this.setState({
-      [target.name]: target.value,
+      [name]: value,
     }, () => {
       this.verifyDisabled();
     });
@@ -34,6 +37,7 @@ export default class Login extends Component {
   handleLogin = async () => {
     const { history } = this.props;
     const { name, email } = this.state;
+    await this.sendToStore(name, email);
     const tokenAPI = await fetchToken();
     const gravatarAPI = fetchGravatar(email);
     const localSt = [{
@@ -43,8 +47,14 @@ export default class Login extends Component {
     }];
     localStorage.setItem('token', tokenAPI.token);
     localStorage.setItem('ranking', JSON.stringify(localSt));
-    history.push('/trivia');
+    history.push('/game');
   };
+
+  sendToStore = async (name, email) => {
+    const { dispPlayerInfo } = this.props;
+    const store = { name, email };
+    await dispPlayerInfo(store);
+  }
 
   toSettingsBtn = () => {
     const { history } = this.props;
@@ -57,7 +67,6 @@ export default class Login extends Component {
       <div className="App">
         <div className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>SUA VEZ</p>
           <form>
             <label htmlFor="name">
               Nome:
@@ -105,4 +114,11 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispPlayerInfo: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  dispPlayerInfo: (state) => dispatch(setPlayer(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -1,6 +1,6 @@
-const saveUserEmail = (state) => ({
-  type: 'SET_USER_INFOS',
-  state,
-});
+export const SET_PLAYER_INFO = 'SET_PLAYER_INFO';
 
-export default saveUserEmail;
+export const setPlayer = (state) => ({
+  type: 'SET_PLAYER_INFO',
+  ...state,
+});
