@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class Header extends Component {
+class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       picture: '',
-      score: 0,
     };
   }
 
@@ -17,10 +18,11 @@ export default class Header extends Component {
   // Usei o recoverUserInfo[0] pra chegar nas infos, provavelmente depois teria que usar um HOF.
   setHeader = () => {
     const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
+    const { score } = this.props;
     this.setState({
       name: recoverUserInfo[0].name,
       picture: recoverUserInfo[0].picture,
-      score: recoverUserInfo[0].score,
+      score,
     });
   }
 
@@ -49,3 +51,13 @@ export default class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  score: state.player.score,
+});
+
+export default connect(mapStateToProps)(Header);

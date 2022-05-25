@@ -14,10 +14,11 @@ class Game extends Component {
       question: [],
       alternatives: [],
       counter: 0,
-      showAnswer: false,
       seconds: 30,
       btnDisabled: false,
       nextBtn: false,
+      right: '',
+      wrong: '',
     };
   }
 
@@ -59,14 +60,14 @@ class Game extends Component {
     const wrongAnswers = incorrectAnswers.map((alt, index) => (
       {
         key: index,
-        className: 'wrong-answer',
+        className: 'wrong',
         id: `wrong-answer-${index}`,
         name: alt,
       }
     ));
     const rightAnswer = {
       key: 'right',
-      className: 'right-answer',
+      className: 'right',
       id: 'correct-answer',
       name: correctAnswer,
     };
@@ -80,22 +81,20 @@ class Game extends Component {
   clickedAnswer = (e) => {
     this.updateScore(e);
     this.setState({
-      showAnswer: true,
       nextBtn: true,
-    }, () => {
-      const { showAnswer } = this.state;
-      if (showAnswer) return import('./Special.css');
+      right: 'right-answer',
+      wrong: 'wrong-answer',
     });
   }
 
-  updateScore = (e) => {
+  updateScore = ({ target }) => {
     this.killTimer();
+    const { question } = this.state;
+    const { difficulty } = question[0];
     const DIFF_HARD_BONUS = 3;
     const DIFF_MEDIUM_BONUS = 2;
-    const { className } = e.target;
-    if (className === 'right-answer') {
-      const { question } = this.state;
-      const { difficulty } = question[0];
+    const selectedAlt = target.innerHTML;
+    if (selectedAlt === question[0].correct_answer) {
       if (difficulty === 'hard') return this.calculateScore(DIFF_HARD_BONUS);
       if (difficulty === 'medium') return this.calculateScore(DIFF_MEDIUM_BONUS);
       return this.calculateScore(1);
@@ -128,18 +127,46 @@ class Game extends Component {
   killTimer = () => {
     const { interval } = this.state;
     clearInterval(interval);
-    this.setState({ btnDisabled: true });
+    this.setState({ btnDisabled: true, nextBtn: true });
   }
 
-  clickedNextBtn = async () => {
+  clickedNextBtn = () => {
     this.setState((prevState) => ({
       counter: prevState.counter + 1,
       seconds: 30,
+      btnDisabled: false,
+      nextBtn: false,
+      right: '',
+      wrong: '',
     }));
+    this.nextQuestion();
+  }
+
+  nextQuestion = () => {
+    const LIMIT_QUESTION = 5;
+    const { questions, counter } = this.state;
+    let counterNext = counter;
+    counterNext += 1;
+    if (counterNext >= LIMIT_QUESTION) {
+      const { history } = this.props;
+      return history.push('/feedback');
+    }
+    const questionTurn = questions.filter((i, index) => (index === counterNext));
+    this.setState({ question: questionTurn });
+    this.renderAlternatives(questionTurn[0]);
+    this.renderTimer();
   }
 
   render() {
-    const { question, alternatives, seconds, nextBtn, btnDisabled } = this.state;
+    const {
+      question,
+      alternatives,
+      seconds,
+      nextBtn,
+      btnDisabled,
+      right,
+      wrong,
+    } = this.state;
     return (
       <div>
         <Header />
@@ -178,7 +205,7 @@ class Game extends Component {
             <button
               key={ each.key }
               data-testid={ each.id }
-              className={ each.className }
+              className={ each.className === 'right' ? right : wrong }
               type="button"
               onClick={ this.clickedAnswer }
               disabled={ btnDisabled }
