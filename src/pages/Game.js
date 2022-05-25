@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
 import { fetchQuestions } from '../redux/actions/fetchAPI';
 import Header from '../redux/components/Header';
+import { setScore } from '../redux/actions';
 
-export default class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +15,9 @@ export default class Game extends Component {
       alternatives: [],
       counter: 0,
       showAnswer: false,
+      seconds: 30,
+      btnDisabled: false,
+      nextBtn: false,
     };
   }
 
@@ -43,6 +48,7 @@ export default class Game extends Component {
     const questionTurn = questions.filter((i, index) => (index === counter));
     this.setState({ question: questionTurn });
     this.renderAlternatives(questionTurn[0]);
+    this.renderTimer();
   }
 
   renderAlternatives = (quest) => {
@@ -51,27 +57,19 @@ export default class Game extends Component {
       incorrect_answers: incorrectAnswers,
     } = quest;
     const wrongAnswers = incorrectAnswers.map((alt, index) => (
-      <button
-        key={ index }
-        type="button"
-        className="wrong-answer"
-        data-testid={ `wrong-answer-${index}` }
-        onClick={ this.clickedAnswer }
-      >
-        { alt }
-      </button>
+      {
+        key: index,
+        className: 'wrong-answer',
+        id: `wrong-answer-${index}`,
+        name: alt,
+      }
     ));
-    const rightAnswer = (
-      <button
-        key="right-answer"
-        type="button"
-        className="right-answer"
-        data-testid="correct-answer"
-        onClick={ this.clickedAnswer }
-      >
-        { correctAnswer }
-      </button>
-    );
+    const rightAnswer = {
+      key: 'right',
+      className: 'right-answer',
+      id: 'correct-answer',
+      name: correctAnswer,
+    };
     const allAlternatives = [rightAnswer, ...wrongAnswers];
     // Extraido de https://flaviocopes.com/how-to-shuffle-array-javascript/
     const NUMBER_MATH_RANDOM = 0.5;
@@ -79,20 +77,84 @@ export default class Game extends Component {
     this.setState({ alternatives });
   }
 
-  clickedAnswer = () => {
+  clickedAnswer = (e) => {
+    this.updateScore(e);
     this.setState({
       showAnswer: true,
+      nextBtn: true,
     }, () => {
       const { showAnswer } = this.state;
       if (showAnswer) return import('./Special.css');
     });
   }
 
+  updateScore = (e) => {
+    this.killTimer();
+    const DIFF_HARD_BONUS = 3;
+    const DIFF_MEDIUM_BONUS = 2;
+    const { className } = e.target;
+    if (className === 'right-answer') {
+      const { question } = this.state;
+      const { difficulty } = question[0];
+      if (difficulty === 'hard') return this.calculateScore(DIFF_HARD_BONUS);
+      if (difficulty === 'medium') return this.calculateScore(DIFF_MEDIUM_BONUS);
+      return this.calculateScore(1);
+    }
+  }
+
+  calculateScore = async (number) => {
+    const RIGHT_ANSWER_POINTS = 10;
+    const { dispScore } = this.props;
+    const { seconds } = this.state;
+    const score = RIGHT_ANSWER_POINTS + (seconds * number);
+    const assertions = 1;
+    const store = { score, assertions };
+    await dispScore(store);
+  }
+
+  renderTimer = () => {
+    const ONE_SECOND = 1000;
+    const interval = setInterval(this.setTimer, ONE_SECOND);
+    this.setState({ interval });
+  }
+
+  setTimer = () => {
+    const { seconds } = this.state;
+    if (seconds === 0) return this.killTimer();
+    const second = seconds - 1;
+    this.setState({ seconds: second });
+  }
+
+  killTimer = () => {
+    const { interval } = this.state;
+    clearInterval(interval);
+    this.setState({ btnDisabled: true });
+  }
+
+  clickedNextBtn = async () => {
+    this.setState((prevState) => ({
+      counter: prevState.counter + 1,
+      seconds: 30,
+    }));
+  }
+
   render() {
-    const { question, alternatives } = this.state;
+    const { question, alternatives, seconds, nextBtn, btnDisabled } = this.state;
     return (
       <div>
         <Header />
+        <h2>{ seconds }</h2>
+        <div>
+          { nextBtn && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.clickedNextBtn }
+            >
+              Next
+            </button>
+          )}
+        </div>
         <div>
           { question.map((quest, index) => (
             <div key={ index }>
@@ -113,7 +175,16 @@ export default class Game extends Component {
           data-testid="answer-options"
         >
           { alternatives.map((each) => (
-            each
+            <button
+              key={ each.key }
+              data-testid={ each.id }
+              className={ each.className }
+              type="button"
+              onClick={ this.clickedAnswer }
+              disabled={ btnDisabled }
+            >
+              { each.name }
+            </button>
           ))}
         </div>
       </div>
@@ -125,4 +196,11 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispScore: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  dispScore: (state) => dispatch(setScore(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Game);
