@@ -9,26 +9,25 @@ class Feedback extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // score: 0,
+      score: 0,
       assertions: 0,
       minRights: 3,
-      zero: 0,
     };
   }
 
-  async componentDidMount() {
-    const { score, assertions, dispResetScore } = this.props;
-    this.setState({ assertions });
+  componentDidMount() {
+    const { score, assertions } = this.props;
+    this.setState({ score, assertions });
     const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
     const rankingLength = recoverUserInfo.length - 1;
     recoverUserInfo[rankingLength].score = score;
     localStorage.setItem('ranking', JSON.stringify(recoverUserInfo));
-    const store = { score: 0, assertions: 0 };
-    await dispResetScore(store);
   }
 
-  clickedPlayAgain = () => {
-    const { history } = this.props;
+  clickedPlayAgain = async () => {
+    const { history, dispResetScore } = this.props;
+    const store = { score: 0, assertions: 0 };
+    await dispResetScore(store);
     history.push('/');
   }
 
@@ -38,7 +37,7 @@ class Feedback extends Component {
   }
 
   render() {
-    const { assertions, minRights, zero } = this.state;
+    const { score, assertions, minRights } = this.state;
     return (
       <div>
         <Header />
@@ -59,13 +58,13 @@ class Feedback extends Component {
         <p
           data-testid="feedback-total-score"
         >
-          { zero }
+          { score }
         </p>
         <p>Acertos:</p>
         <p
           data-testid="feedback-total-question"
         >
-          { zero }
+          { assertions }
         </p>
         <button
           type="button"

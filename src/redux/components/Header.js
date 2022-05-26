@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor(props) {
@@ -18,12 +18,12 @@ class Header extends Component {
 
   setHeader = () => {
     const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
-    // const { score } = this.props;
+    const { score } = this.props;
     const rankingLength = recoverUserInfo.length - 1;
     this.setState({
       name: recoverUserInfo[rankingLength].name,
       picture: recoverUserInfo[rankingLength].picture,
-      // score,
+      score,
     });
   }
 
@@ -53,9 +53,9 @@ class Header extends Component {
   }
 }
 
-// Header.propTypes = {
-//   score: PropTypes.number.isRequired,
-// };
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   score: state.player.score,
