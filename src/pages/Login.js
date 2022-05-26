@@ -13,6 +13,7 @@ class Login extends Component {
       email: '',
       name: '',
       isDisabled: true,
+      rankingStorage: JSON.parse(localStorage.getItem('ranking')) || [],
     };
   }
 
@@ -36,11 +37,11 @@ class Login extends Component {
 
   handleLogin = async () => {
     const { history } = this.props;
-    const { name, email } = this.state;
+    const { name, email, rankingStorage } = this.state;
     await this.sendToStore(name, email);
     const tokenAPI = await fetchToken();
     const gravatarAPI = fetchGravatar(email);
-    const localSt = [{
+    const localSt = [...rankingStorage, {
       name,
       score: 0,
       picture: gravatarAPI,
