@@ -3,8 +3,30 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
 import Header from '../redux/components/Header';
+import { resetScore } from '../redux/actions';
 
 class Feedback extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // score: 0,
+      assertions: 0,
+      minRights: 3,
+      zero: 0,
+    };
+  }
+
+  async componentDidMount() {
+    const { score, assertions, dispResetScore } = this.props;
+    this.setState({ assertions });
+    const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
+    const rankingLength = recoverUserInfo.length - 1;
+    recoverUserInfo[rankingLength].score = score;
+    localStorage.setItem('ranking', JSON.stringify(recoverUserInfo));
+    const store = { score: 0, assertions: 0 };
+    await dispResetScore(store);
+  }
+
   clickedPlayAgain = () => {
     const { history } = this.props;
     history.push('/');
@@ -16,11 +38,11 @@ class Feedback extends Component {
   }
 
   render() {
-    const { score, assertions } = this.props;
+    const { assertions, minRights, zero } = this.state;
     return (
       <div>
         <Header />
-        {assertions < 3 ? (
+        { assertions < minRights ? (
           <h3
             data-testid="feedback-text"
           >
@@ -37,13 +59,13 @@ class Feedback extends Component {
         <p
           data-testid="feedback-total-score"
         >
-          { score }
+          { zero }
         </p>
         <p>Acertos:</p>
         <p
           data-testid="feedback-total-question"
         >
-          { assertions }
+          { zero }
         </p>
         <button
           type="button"
@@ -65,8 +87,12 @@ class Feedback extends Component {
 }
 
 Feedback.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  dispResetScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -74,5 +100,8 @@ const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  dispResetScore: (state) => dispatch(resetScore(state)),
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

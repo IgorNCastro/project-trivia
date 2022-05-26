@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor(props) {
@@ -8,6 +8,7 @@ class Header extends Component {
     this.state = {
       name: '',
       picture: '',
+      score: 0,
     };
   }
 
@@ -15,14 +16,14 @@ class Header extends Component {
     this.setHeader();
   }
 
-  // Usei o recoverUserInfo[0] pra chegar nas infos, provavelmente depois teria que usar um HOF.
   setHeader = () => {
     const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
-    const { score } = this.props;
+    // const { score } = this.props;
+    const rankingLength = recoverUserInfo.length - 1;
     this.setState({
-      name: recoverUserInfo[0].name,
-      picture: recoverUserInfo[0].picture,
-      score,
+      name: recoverUserInfo[rankingLength].name,
+      picture: recoverUserInfo[rankingLength].picture,
+      // score,
     });
   }
 
@@ -52,9 +53,9 @@ class Header extends Component {
   }
 }
 
-Header.propTypes = {
-  score: PropTypes.number.isRequired,
-};
+// Header.propTypes = {
+//   score: PropTypes.number.isRequired,
+// };
 
 const mapStateToProps = (state) => ({
   score: state.player.score,
