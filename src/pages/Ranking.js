@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
+import { resetScore } from '../redux/actions';
 
-export default class Ranking extends Component {
+class Ranking extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,8 +19,10 @@ export default class Ranking extends Component {
     this.setState({ rankingUsers: rankedList });
   }
 
-  clickedGoHome = () => {
-    const { history } = this.props;
+  clickedGoHome = async () => {
+    const { history, dispResetScore } = this.props;
+    const store = { score: 0, assertions: 0 };
+    await dispResetScore(store);
     history.push('/');
   }
 
@@ -62,4 +66,11 @@ Ranking.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispResetScore: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  dispResetScore: (state) => dispatch(resetScore(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
