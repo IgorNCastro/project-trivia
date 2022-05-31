@@ -1,11 +1,14 @@
 import React from 'react';
+import { createMemoryHistory } from 'history';
 import { screen, fireEvent } from '@testing-library/react';
-// import App from '../../App';
+import App from '../../App';
 import Feedback from '../../pages/Feedback';
 import renderWithRouterAndRedux from './renderWithRouterAndRedux';
 
 test('Testa botões na tela', () => {
-  renderWithRouterAndRedux(<Feedback />);
+  const customHistory = createMemoryHistory();
+  renderWithRouterAndRedux(<App />);
+  customHistory.push('/feedback');
   const playAgainBtn = screen.getByText('Play Again');
   const rankingBtn = screen.getByText('Ranking');
   expect(playAgainBtn).toBeInTheDocument();
@@ -37,3 +40,7 @@ test('verifica se o botão ranking leva para a pagina ranking', () => {
   const { pathname } = history.location;
   expect(pathname).toBe('/ranking');
 })
+
+// const customHistory = createMemoryHistory();
+// renderWithRouter(<App />);
+// customHistory.push('/feedback')
