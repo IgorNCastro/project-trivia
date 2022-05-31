@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import Login from '../../pages/Login';
 import App from '../../App';
 import renderWithRouterAndRedux from './renderWithRouterAndRedux';
+// import mockFetchWithToken from '../../../cypress/mocks/fetch';
+import { tokenResponse } from '../../../cypress/mocks/token'
 
 const VALID_EMAIL = 'test@test.test';
 const USER = 'test';
@@ -12,8 +14,19 @@ const apiResponse = Promise.resolve({
     json: () => Promise.resolve(mockData),
     ok: true,
   });
+
+const tokenAPIResponse = Promise.resolve({
+  json: () => Promise.resolve(tokenResponse),
+  ok: true,
+});
   
-  const mockedExchange = jest.spyOn(global, 'fetch').mockImplementation(() => apiResponse);
+jest.spyOn(global, 'fetch').mockImplementation((url) => {
+  if(url === 'https://opentdb.com/api_token.php?command=request') {
+    return tokenAPIResponse;
+    } 
+		return apiResponse;
+  }
+);
 
 
 test('testa se ao acessar a pagina Login está na rota /', () => {
@@ -65,7 +78,7 @@ test('Teste se o a img renderiza', () => {
     expect(img).toBeDefined();
   });
 
-  test('ao apertar o botao play ele leva para a tela de jogo', async () => {
+test('ao apertar o botao play ele leva para a tela de jogo', () => {
     const { history } = renderWithRouterAndRedux(<App/>);
     const btnPlay = screen.getByTestId('btn-play');
     const email = screen.getByTestId('input-gravatar-email');
@@ -74,8 +87,7 @@ test('Teste se o a img renderiza', () => {
     userEvent.type(name, USER);
     expect(btnPlay).not.toBeDisabled;
     fireEvent.click(btnPlay);
-    await screen.getByRole('img', { alt: 'test' });
-    
+    screen.getByRole('img', { alt: 'test' });
 })
 
 test('checa se o botão setting existe e leva para a pag', () => {
@@ -84,6 +96,5 @@ test('checa se o botão setting existe e leva para a pag', () => {
     expect(btnSetting).toBeInTheDocument();
     fireEvent.click(btnSetting)
     const { pathname } = history.location;
-    expect(pathname).toBe('/settings')
-       
+    expect(pathname).toBe('/settings') 
 })
