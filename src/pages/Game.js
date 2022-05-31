@@ -185,7 +185,7 @@ class Game extends Component {
             </button>
           )}
         </div>
-        <div className="cat-quest">
+        <div className="cat-quest-answer">
           { question.map((quest, index) => (
             <div key={ index }>
               <h2
@@ -200,22 +200,22 @@ class Game extends Component {
               </h1>
             </div>
           ))}
-        </div>
-        <div
-          data-testid="answer-options"
-        >
-          { alternatives.map((each) => (
-            <button
-              key={ each.key }
-              data-testid={ each.id }
-              className={ each.className === 'right' ? right : wrong }
-              type="button"
-              onClick={ this.clickedAnswer }
-              disabled={ btnDisabled }
-            >
-              { each.name }
-            </button>
-          ))}
+          <div
+            data-testid="answer-options"
+          >
+            { alternatives.map((each) => (
+              <button
+                key={ each.key }
+                data-testid={ each.id }
+                className={ each.className === 'right' ? right : wrong }
+                type="button"
+                onClick={ this.clickedAnswer }
+                disabled={ btnDisabled }
+              >
+                { each.name }
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     );

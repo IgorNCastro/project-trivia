@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import '../App.css';
 
 export default class Settings extends Component {
-  toGameBtn = () => {
+  toLoginBtn = () => {
     const { history } = this.props;
-    history.push('/game');
+    history.push('/');
   };
 
   render() {
@@ -19,9 +19,9 @@ export default class Settings extends Component {
           </h1>
           <button
             type="button"
-            onClick={ this.toGameBtn }
+            onClick={ this.toLoginBtn }
           >
-            Back to Game
+            Back
           </button>
         </header>
       </div>

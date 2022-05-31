@@ -30,13 +30,14 @@ class Ranking extends Component {
     const { rankingUsers } = this.state;
     return (
       <div>
-        <h2
+        <h1
+          className="title-ranking"
           data-testid="ranking-title"
         >
           Ranking
-        </h2>
+        </h1>
         { rankingUsers.map((user, index) => (
-          <div key={ index }>
+          <div key={ index } className="ranking">
             <img src={ user.picture } alt={ user.name } />
             <h4
               data-testid={ `player-name-${index}` }
@@ -50,13 +51,15 @@ class Ranking extends Component {
             </h4>
           </div>
         ))}
-        <button
-          type="button"
-          data-testid="btn-go-home"
-          onClick={ this.clickedGoHome }
-        >
-          Go Home
-        </button>
+        <div className="btn-ranking">
+          <button
+            type="button"
+            data-testid="btn-go-home"
+            onClick={ this.clickedGoHome }
+          >
+            Go Home
+          </button>
+        </div>
       </div>
     );
   }

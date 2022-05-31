@@ -41,45 +41,47 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        { assertions < minRights ? (
-          <h3
-            data-testid="feedback-text"
+        <div className="feed-final">
+          { assertions < minRights ? (
+            <h3
+              data-testid="feedback-text"
+            >
+              Could be better...
+            </h3>
+          ) : (
+            <h3
+              data-testid="feedback-text"
+            >
+              Well Done!
+            </h3>
+          )}
+          <p>Placar Final:</p>
+          <p
+            data-testid="feedback-total-score"
           >
-            Could be better...
-          </h3>
-        ) : (
-          <h3
-            data-testid="feedback-text"
+            { score }
+          </p>
+          <p>Acertos:</p>
+          <p
+            data-testid="feedback-total-question"
           >
-            Well Done!
-          </h3>
-        )}
-        <p>Placar Final:</p>
-        <p
-          data-testid="feedback-total-score"
-        >
-          { score }
-        </p>
-        <p>Acertos:</p>
-        <p
-          data-testid="feedback-total-question"
-        >
-          { assertions }
-        </p>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ this.clickedPlayAgain }
-        >
-          Play Again
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ this.clickedToRanking }
-        >
-          Ranking
-        </button>
+            { assertions }
+          </p>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ this.clickedPlayAgain }
+          >
+            Play Again
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.clickedToRanking }
+          >
+            Ranking
+          </button>
+        </div>
       </div>
     );
   }

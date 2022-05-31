@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
-
 body {
+  background-color: #282c34;
   box-sizing: border-box;
+  color: white;
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
-  background-color: #282c34;
-  color: rgb(255, 255, 255);
 }
 
 .App {
@@ -15,8 +13,8 @@ body {
 
 .App-logo {
   height: 15vmin;
-  pointer-events: none;
   margin: 40px;
+  pointer-events: none;
 }
 
 .logo-in-game {
@@ -81,22 +79,21 @@ body {
 }
 
 .form-header {
+  background: #1c1c1c;
+  border-radius: 10px;
+  box-shadow: -13px -13px 8px #141414 , 13px 13px 8px #242424;
   display: flex;
   flex-direction: column;
   padding: 45px;
-  border-radius: 10px;
-  background: #1c1c1c;
-  box-shadow:  -13px -13px 8px #141414,
-            13px 13px 8px #242424;
 }
 
 input {
-  border: 2px solid transparent;
-  border-color: #000;
   background: transparent;
-  color: rgb(255, 255, 255);
-  padding: 10px;
+  border: 2px solid transparent;
+  border-color: black;
+  color: white;
   margin: 4px;
+  padding: 10px;
 }
 
 label {
@@ -104,26 +101,25 @@ label {
 }
 
 button {
-  display: inline-block;
-  outline: 0;
-  text-align: center;
-  cursor: pointer;
-  padding: 10px;
-  border: 0;
-  font-size: 20px;
-  border: 2px solid transparent;
-  border-color: #000;
-  color: rgb(255, 255, 255);
   background: transparent;
+  border: 2px solid transparent;
+  border-color: black;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
   font-weight: 800;
   line-height: 30px;
-  transition: background,color .1s ease-in-out;
   margin: 4px;
+  outline: 0;
+  padding: 10px;
+  text-align: center;
+  transition: background , color 0.1s ease-in-out;
 }
 
 button:hover {
-  background-color: #000;
-  color: #fff;
+  background-color: black;
+  color: white;
 }
 
 button:disabled {
@@ -137,8 +133,8 @@ button:disabled {
 }
 
 .name-score-header {
-  text-align: center;
   margin: 0 30px;
+  text-align: center;
 }
 
 .game-card {
@@ -152,12 +148,44 @@ button:disabled {
   margin: 10px 45%;
 }
 
-.cat-quest {
+.cat-quest-answer {
+  background: #1c1c1c;
+  border-radius: 10px;
+  box-shadow: -13px -13px 8px #141414 , 13px 13px 8px #242424;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  margin: 50px 100px;
+  padding: 30px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
+}
+
+.feed-final {
+  align-items: center;
+  background: #1c1c1c;
+  border-radius: 10px;
+  box-shadow: -13px -13px 8px #141414 , 13px 13px 8px #242424;
+  display: flex;
+  flex-direction: column;
+  margin: 50px 200px;
+  padding: 20px;
+}
+
+.title-ranking {
+  text-align: center;
+}
+
+.btn-ranking {
+  display: flex;
+  justify-content: center;
+}
+
+.ranking {
+  display: flex;
+  justify-content: space-around;
+  margin: 1% 20%;
 }

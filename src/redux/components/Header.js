@@ -49,7 +49,7 @@ class Header extends Component {
               <h3
                 data-testid="header-score"
               >
-                { `Score: ${score}` }
+                { score }
               </h3>
             </div>
           </div>
