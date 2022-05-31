@@ -168,9 +168,12 @@ class Game extends Component {
       wrong,
     } = this.state;
     return (
-      <div>
+      <div className="game-card">
         <Header />
-        <h2>{ seconds }</h2>
+        <div className="time-clock">
+          <h3>Time</h3>
+          <h3>{ seconds }</h3>
+        </div>
         <div>
           { nextBtn && (
             <button
@@ -182,37 +185,37 @@ class Game extends Component {
             </button>
           )}
         </div>
-        <div>
+        <div className="cat-quest-answer">
           { question.map((quest, index) => (
             <div key={ index }>
-              <h4
+              <h2
                 data-testid="question-category"
               >
                 { quest.category }
-              </h4>
-              <p
+              </h2>
+              <h1
                 data-testid="question-text"
               >
                 { quest.question }
-              </p>
+              </h1>
             </div>
           ))}
-        </div>
-        <div
-          data-testid="answer-options"
-        >
-          { alternatives.map((each) => (
-            <button
-              key={ each.key }
-              data-testid={ each.id }
-              className={ each.className === 'right' ? right : wrong }
-              type="button"
-              onClick={ this.clickedAnswer }
-              disabled={ btnDisabled }
-            >
-              { each.name }
-            </button>
-          ))}
+          <div
+            data-testid="answer-options"
+          >
+            { alternatives.map((each) => (
+              <button
+                key={ each.key }
+                data-testid={ each.id }
+                className={ each.className === 'right' ? right : wrong }
+                type="button"
+                onClick={ this.clickedAnswer }
+                disabled={ btnDisabled }
+              >
+                { each.name }
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     );
