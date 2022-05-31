@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
+
 body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #282c34;
+  color: rgb(255, 255, 255);
 }
 
 .App {
@@ -11,6 +16,12 @@ body {
 .App-logo {
   height: 15vmin;
   pointer-events: none;
+  margin: 40px;
+}
+
+.logo-in-game {
+  height: 10vmin;
+  margin-top: 20px;
 }
 
 .red-border {
@@ -30,7 +41,6 @@ body {
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
@@ -68,4 +78,86 @@ body {
 
 .right-answer {
   border: 3px solid rgb(6, 240, 15);
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  padding: 45px;
+  border-radius: 10px;
+  background: #1c1c1c;
+  box-shadow:  -13px -13px 8px #141414,
+            13px 13px 8px #242424;
+}
+
+input {
+  border: 2px solid transparent;
+  border-color: #000;
+  background: transparent;
+  color: rgb(255, 255, 255);
+  padding: 10px;
+  margin: 4px;
+}
+
+label {
+  font-size: 20px;
+}
+
+button {
+  display: inline-block;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  border: 0;
+  font-size: 20px;
+  border: 2px solid transparent;
+  border-color: #000;
+  color: rgb(255, 255, 255);
+  background: transparent;
+  font-weight: 800;
+  line-height: 30px;
+  transition: background,color .1s ease-in-out;
+  margin: 4px;
+}
+
+button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+button:disabled {
+  background-color: rgb(83, 83, 83);
+  color: rgb(139, 139, 139);
+}
+
+.info-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.name-score-header {
+  text-align: center;
+  margin: 0 30px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.time-clock {
+  border: 2px solid black;
+  margin: 10px 45%;
+}
+
+.cat-quest {
+  display: flex;
+  justify-content: center;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
 }

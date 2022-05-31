@@ -68,9 +68,10 @@ class Login extends Component {
       <div className="App">
         <div className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <form>
+          <form className="form-header">
             <label htmlFor="name">
-              Nome:
+              Nome
+              <br />
               <input
                 type="text"
                 name="name"
@@ -80,7 +81,8 @@ class Login extends Component {
               />
             </label>
             <label htmlFor="email">
-              Email:
+              Email
+              <br />
               <input
                 type="email"
                 name="email"
