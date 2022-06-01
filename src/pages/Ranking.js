@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../App.css';
 import { resetScore } from '../redux/actions';
+import helper from '../helpers/helper';
 
 class Ranking extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Ranking extends Component {
   componentDidMount() {
     const recoverUserInfo = JSON.parse(localStorage.getItem('ranking'));
     // https://stackoverflow.com/questions/54623130/javascript-sort-an-array-of-objects-by-a-numeric-property-in-each-object
-    const rankedList = recoverUserInfo.sort(({ score: a }, { score: b }) => b - a);
+    const rankedList = recoverUserInfo.sort(helper);
     this.setState({ rankingUsers: rankedList });
   }
 
