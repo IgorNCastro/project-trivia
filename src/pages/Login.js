@@ -78,6 +78,7 @@ class Login extends Component {
                 data-testid="input-player-name"
                 value={ name }
                 onChange={ this.handleChange }
+                autocomplete="off"
               />
             </label>
             <label htmlFor="email">
@@ -89,6 +90,7 @@ class Login extends Component {
                 data-testid="input-gravatar-email"
                 value={ email }
                 onChange={ this.handleChange }
+                autocomplete="off"
               />
             </label>
             <button
